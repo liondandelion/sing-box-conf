@@ -1,3 +1,5 @@
 private/
-sing-box-win-package/
-geo/
+*.srs
+*.exe
+*.db
+*.zip
