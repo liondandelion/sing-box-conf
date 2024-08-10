@@ -21,11 +21,17 @@
         ],
         "rule_set": [
             {
-                "type": "local",
+                "type": "remote",
                 "tag": "geosite-anvyko",
                 "format": "binary",
-                "path": "./geosite-anvyko.srs"
+                "url": "https://github.com/liondandelion/sing-box-conf/releases/latest/download/geosite-anvyko.srs",
+                "download_detour": "direct-out"
             }
         ]
+    },
+    "experimental": {
+        "cache_file": {
+            "enabled": true
     }
+  }
 }
