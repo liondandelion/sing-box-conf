@@ -16,8 +16,20 @@
                 "outbound": "vless-out"
             },
             {
+                "rule_set": "geosite-anvyko",
+                "outbound": "vless-out"
+            },
+            {
                 "protocol": "dns",
                 "outbound": "dns-out"
+            }
+        ],
+        "rule_set": [
+            {
+                "type": "local",
+                "tag": "geosite-anvyko",
+                "format": "binary",
+                "path": "./geosite-anvyko.srs"
             }
         ]
     }
