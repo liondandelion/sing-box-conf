@@ -3,10 +3,7 @@
         "rules": [
             {
                 "domain_keyword": [
-                    "instagram.com",
-                    "cdninstagram.com",
-                    "medium.com",
-                    "speedtest.net"
+                    "instagram.com"
                 ],
                 "outbound": "vless-out"
             },
