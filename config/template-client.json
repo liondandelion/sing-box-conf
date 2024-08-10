@@ -1,0 +1,68 @@
+{
+    "log": {
+        "output": "sing-box.log",
+        "level": "error",
+        "timestamp": true
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "dns_proxy",
+                "address": "https://1.1.1.1/dns-query",
+                "strategy": "ipv4_only"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "type": "tun",
+            "tag": "tun-in",
+            "interface_name": "tun0",
+            "inet4_address": "10.11.12.1/24",
+            "mtu": 9000,
+            "auto_route": true,
+            "stack": "system",
+            "sniff": true
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "direct",
+            "tag": "direct-out"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        },
+        {
+            "type": "dns",
+            "tag": "dns-out"
+        },
+        {
+            "type": "vless",
+            "tag": "vless-out",
+
+            "server": "",
+            "server_port": 443,
+            "uuid": "",
+            "flow": "xtls-rprx-vision",
+            "network": "tcp",
+            "tls": {
+                "enabled": true,
+                "server_name": "yahoo.com",
+                "utls": {
+                    "enabled": true,
+                    "fingerprint": "chrome"
+                },
+                "reality": {
+                    "enabled": true,
+                    "public_key": "",
+                    "short_id": ""
+                }
+            }
+        }
+    ],
+    "route": {
+        "auto_detect_interface": true
+    }
+}
