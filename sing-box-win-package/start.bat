@@ -1,1 +1,1 @@
-start "sing-box" /min %~dp0sing-box.exe -D %~dp0 -c %~dp0config.json run
+start "sing-box" /d "%~dp0" /min .\sing-box.exe -D . -c .\config.json run
