@@ -10,9 +10,6 @@
             "tag": "vless-in",
             "listen": "::",
             "listen_port": 443,
-            "sniff": true,
-            "sniff_override_destination": true,
-            "sniff_timeout": "300ms",
             "users": [
                 {
                     "name": "",
@@ -42,17 +39,17 @@
         {
             "type": "direct",
             "tag": "direct-out"
-        },
-        {
-            "type": "block",
-            "tag": "block"
         }
     ],
     "route": {
         "rules": [
+			{
+				"inbound": "tun-in",
+				"action": "sniff"
+			},
             {
                 "protocol": "bittorrent",
-                "outbound": "block"
+                "action": "reject"
             }
         ]
     }
