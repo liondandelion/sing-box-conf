@@ -1,0 +1,45 @@
+#! /usr/bin/env bash
+
+set -eu
+
+usage() {
+    echo "Usage:"
+    echo "  ucgen username"
+}
+
+if [[ $# -ne 1 ]]; then
+    usage
+    exit 1
+fi
+
+rootdir=$(cd "$(dirname "$0")/.." && pwd)
+cd "${rootdir}"
+
+username=$1
+
+. .env
+if [[ -z ${server} ]]; then
+    echo "Add server env variable in .env file!"
+    exit 1
+fi
+
+keypair=$(sing-box generate reality-keypair | cut --delimiter=" " --field=2)
+private_key=$(echo ${keypair} | cut -d " "  -f 1)
+public_key=$(echo ${keypair} | cut -d " " -f 2)
+uuid=$(sing-box generate uuid)
+sid=$(sing-box generate rand 8 --hex)
+
+echo "{"
+echo "  \"name\": \"${username}\""
+echo "  \"uuid\": \"${uuid}\""
+echo "  \"short_id\": \"${sid}\""
+echo "}"
+
+config="private/config-${username}.json"
+cp config/template-client.json ${config}
+sed -e "s/\"server\": \"\"/\"server\": \"${server}\"/g" \
+-e "s/\"public_key\": \"\"/\"public_key\": \"${public_key}\"/g" \
+-e "s/\"uuid\": \"\"/\"uuid\": \"${uuid}\"/g" \
+-e "s/\"short_id\": \"\"/\"short_id\": \"${sid}\"/g" \
+${config} > ${config}.sed
+mv ${config}.sed ${config}

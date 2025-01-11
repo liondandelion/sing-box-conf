@@ -95,7 +95,7 @@
         "format": "binary",
         "url": "https://github.com/liondandelion/sing-box-conf/releases/latest/download/geosite-anvyko.srs",
         "download_detour": "direct-out",
-		"update_interval": "1h"
+        "update_interval": "1h0m0s"
       },
       {
         "type": "local",
