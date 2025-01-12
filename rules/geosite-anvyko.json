@@ -2,7 +2,9 @@
   "version": 2,
   "rules": [
     {
-      "package_name": "com.instagram.android",
+      "package_name": "com.instagram.android"
+    },
+    {
       "domain": [
         "byteoversea.com",
         "muscdn.com",
