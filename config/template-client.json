@@ -97,10 +97,21 @@
         "update_interval": "1h0m0s"
       },
       {
-        "type": "local",
+        "type": "inline",
         "tag": "local-rules",
-        "format": "source",
-        "path": "local-rules.json"
+        "rules": [
+          {
+            "package_name": "com.instagram.android"
+          },
+          {
+            "domain": [
+              "example.com"
+            ],
+            "domain_suffix": [
+              ".example.com"
+            ]
+          }
+        ]
       }
     ],
     "auto_detect_interface": true
