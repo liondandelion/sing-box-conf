@@ -2,44 +2,62 @@
 
 set -eu
 
+ROOTDIR=$(cd "$(dirname "$0")/.." && pwd)
+cd "${ROOTDIR}"
+
 usage() {
     echo "Usage:"
-    echo "  ucgen username"
+    echo "  ucgen <username> <servername>"
+    echo
+    echo "This script will search in ${ROOTDIR}/private/users for files"
+    echo "<username>.user and in ${ROOTDIR}/private/servers for files"
+    echo "<servername>.server, which should be just env files for the shell"
+    echo
+    echo ".server files should contain variables SERVER, SERVER_NAME, PUBLIC_KEY, PRIVATE_KEY"
+    echo ".user files should contain variables UUID and SHORT_ID"
 }
 
-if [[ $# -ne 1 ]]; then
+echoerr() {
+    echo "$@" 1>&2;
+}
+
+if [[ $# -ne 2 ]]; then
     usage
     exit 1
 fi
 
-rootdir=$(cd "$(dirname "$0")/.." && pwd)
-cd "${rootdir}"
+USERNAME=$1
+SERVERNAME=$2
+USERENV="${ROOTDIR}/private/users/${USERNAME}.user"
+SERVERENV="${ROOTDIR}/private/servers/${SERVERNAME}.server"
 
-username=$1
-
-. .env
-if [[ -z ${server} ]]; then
-    echo "Add server env variable in .env file!"
+if [[ ! -f "${SERVERENV}" ]]; then
+    echoerr "Generate .server file first"
     exit 1
 fi
 
-keypair=$(sing-box generate reality-keypair | cut --delimiter=" " --field=2)
-private_key=$(echo ${keypair} | cut -d " "  -f 1)
-public_key=$(echo ${keypair} | cut -d " " -f 2)
-uuid=$(sing-box generate uuid)
-sid=$(sing-box generate rand 8 --hex)
+if [[ ! -f "${USERENV}" ]]; then
+    UUID=$(sing-box generate uuid)
+    SHORT_ID=$(sing-box generate rand 8 --hex)
+    echo "UUID=\"${UUID}\"" > "${USERENV}"
+    echo "SHORT_ID=\"${SHORT_ID}\"" >> "${USERENV}"
+fi
+
+source "${SERVERENV}"
+source "${USERENV}"
 
 echo "{"
-echo "  \"name\": \"${username}\""
-echo "  \"uuid\": \"${uuid}\""
-echo "  \"short_id\": \"${sid}\""
+echo "  \"name\": \"${USERNAME}\""
+echo "  \"uuid\": \"${UUID}\""
+echo "  \"short_id\": \"${SHORT_ID}\""
 echo "}"
 
-config="private/config-${username}.json"
-cp config/template-client.json ${config}
-sed -e "s/\"server\": \"\"/\"server\": \"${server}\"/g" \
--e "s/\"public_key\": \"\"/\"public_key\": \"${public_key}\"/g" \
--e "s/\"uuid\": \"\"/\"uuid\": \"${uuid}\"/g" \
--e "s/\"short_id\": \"\"/\"short_id\": \"${sid}\"/g" \
-${config} > ${config}.sed
-mv ${config}.sed ${config}
+CONFIG="private/configs/${USERNAME}.json"
+cp config/template-client.json ${CONFIG}
+sed -e "s/\"server\": \"\"/\"server\": \"${SERVERADDR}\"/g" \
+-e "s/\"server_name\": \"\"/\"server_name\": \"${SERVERFAKE}\"/g" \
+-e "s/\"public_key\": \"\"/\"public_key\": \"${PUBLIC_KEY}\"/g" \
+-e "s/\"uuid\": \"\"/\"uuid\": \"${UUID}\"/g" \
+-e "s/\"short_id\": \"\"/\"short_id\": \"${SHORT_ID}\"/g" \
+${CONFIG} > ${CONFIG}.sed
+mv ${CONFIG}.sed ${CONFIG}
