@@ -76,15 +76,15 @@
   "route": {
     "rules": [
       {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
         "rule_set": [
           "geosite-anvyko",
           "local-rules"
         ],
         "outbound": "vless-out"
-      },
-      {
-        "protocol": "dns",
-        "outbound": "dns-out"
       }
     ],
     "rule_set": [
