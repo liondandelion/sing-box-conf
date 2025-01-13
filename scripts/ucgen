@@ -46,12 +46,6 @@ fi
 source "${SERVERENV}"
 source "${USERENV}"
 
-echo "{"
-echo "  \"name\": \"${USERNAME}\""
-echo "  \"uuid\": \"${UUID}\""
-echo "  \"short_id\": \"${SHORT_ID}\""
-echo "}"
-
 CONFIG="private/configs/${USERNAME}.json"
 cp config/template-client.json ${CONFIG}
 sed -e "s/\"server\": \"\"/\"server\": \"${SERVERADDR}\"/g" \
