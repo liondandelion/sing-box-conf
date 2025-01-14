@@ -49,6 +49,7 @@ source "${USERENV}"
 CONFIG="private/configs/${USERNAME}.json"
 cp config/template-client.json ${CONFIG}
 sed -e "s/\"server\": \"\"/\"server\": \"${SERVERADDR}\"/g" \
+-e "s/\"vless-dns-domain\": \"\"/\"domain\": \"${SERVERADDR}\"/g" \
 -e "s/\"server_name\": \"\"/\"server_name\": \"${SERVERFAKE}\"/g" \
 -e "s/\"public_key\": \"\"/\"public_key\": \"${PUBLIC_KEY}\"/g" \
 -e "s/\"uuid\": \"\"/\"uuid\": \"${UUID}\"/g" \
