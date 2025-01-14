@@ -21,6 +21,7 @@
       {
         "vless-dns-domain": "",
         "server": "dns-local"
+      },
       {
         "rule_set": [
           "geosite-anvyko",
