@@ -19,7 +19,7 @@
     ],
     "rules": [
       {
-        "vless-dns-domain": "",
+        "outbound": "any",
         "server": "dns-local"
       },
       {
