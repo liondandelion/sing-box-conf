@@ -9,7 +9,9 @@
       ]
     },
     {
-      "package_name": "com.instagram.android"
+      "package_name": [
+        "com.instagram.android",
+        "com.discord"
     },
     {
       "domain": [
