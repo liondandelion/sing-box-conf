@@ -2,6 +2,13 @@
   "version": 2,
   "rules": [
     {
+      "network": "udp",
+      "process_name": [
+        "Discord.exe",
+        "Dicsord"
+      ]
+    },
+    {
       "package_name": "com.instagram.android"
     },
     {

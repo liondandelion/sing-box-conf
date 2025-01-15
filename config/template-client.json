@@ -105,9 +105,6 @@
         "tag": "local-rules",
         "rules": [
           {
-            "package_name": "com.instagram.android"
-          },
-          {
             "domain": [
               "example.com"
             ],
