@@ -16,6 +16,8 @@
     },
     {
       "domain": [
+        "medium.com",
+        "medium.systems",
         "byteoversea.com",
         "muscdn.com",
         "musical.ly",
@@ -332,6 +334,8 @@
         "wwwinstagram.com"
       ],
       "domain_suffix": [
+        ".medium.com",
+        ".medium.systems",
         ".byteoversea.com",
         ".muscdn.com",
         ".musical.ly",
