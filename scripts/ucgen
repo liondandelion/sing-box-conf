@@ -47,7 +47,10 @@ source "${SERVERENV}"
 source "${USERENV}"
 
 CONFIG="private/configs/${USERNAME}.json"
+CONFIG_ALL="private/configs/${USERNAME}-all.json"
 cp config/template-client.json ${CONFIG}
+cp config/template-all.json ${CONFIG_ALL}
+
 sed -e "s/\"server\": \"\"/\"server\": \"${SERVERADDR}\"/g" \
 -e "s/\"server_name\": \"\"/\"server_name\": \"${SERVERFAKE}\"/g" \
 -e "s/\"public_key\": \"\"/\"public_key\": \"${PUBLIC_KEY}\"/g" \
@@ -55,3 +58,12 @@ sed -e "s/\"server\": \"\"/\"server\": \"${SERVERADDR}\"/g" \
 -e "s/\"short_id\": \"\"/\"short_id\": \"${SHORT_ID}\"/g" \
 ${CONFIG} > ${CONFIG}.sed
 mv ${CONFIG}.sed ${CONFIG}
+
+sed -e "s/\"server\": \"\"/\"server\": \"${SERVERADDR}\"/g" \
+-e "s/\"domain\": \"\"/\"domain\": \"${SERVERADDR}\"/g" \
+-e "s/\"server_name\": \"\"/\"server_name\": \"${SERVERFAKE}\"/g" \
+-e "s/\"public_key\": \"\"/\"public_key\": \"${PUBLIC_KEY}\"/g" \
+-e "s/\"uuid\": \"\"/\"uuid\": \"${UUID}\"/g" \
+-e "s/\"short_id\": \"\"/\"short_id\": \"${SHORT_ID}\"/g" \
+${CONFIG_ALL} > ${CONFIG_ALL}.sed
+mv ${CONFIG_ALL}.sed ${CONFIG_ALL}
