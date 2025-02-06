@@ -20,6 +20,7 @@
     "rules": [
       {
         "domain": "",
+        "action": "route",
         "server": "dns-local"
       }
     ]
@@ -31,8 +32,7 @@
       "interface_name": "tun0",
       "address": "10.11.12.1/24",
       "auto_route": true,
-      "stack": "system",
-      "sniff": true
+      "stack": "system"
     }
   ],
   "outbounds": [
@@ -60,17 +60,17 @@
     {
       "type": "direct",
       "tag": "direct-out"
-    },
-    {
-      "type": "dns",
-      "tag": "dns-out"
     }
   ],
   "route": {
     "rules": [
       {
+        "inbound": "tun-in",
+        "action": "sniff"
+      },
+      {
         "protocol": "dns",
-        "outbound": "dns-out"
+        "action": "hijack-dns"
       }
     ],
     "auto_detect_interface": true

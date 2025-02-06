@@ -16,33 +16,59 @@ usage() {
     echo "<serveraddr> should be the actual address (or dns) of the server"
     echo "<serverfake> should be the actual address (or dns) of the fake"
     echo "(vless) server"
+    echo
+    echo "if .server file already exists, this script should be used as:"
+    echo "  scgen <servername>"
+    echo "in this case the script will generate server config file"
 }
 
 echoerr() {
     echo "$@" 1>&2;
 }
 
-if [[ $# -ne 3 ]]; then
+if [[ $# -ne 1 && $# -ne 3 ]]; then
     usage
     exit 1
 fi
 
 SERVERNAME=$1
-SERVERADDR=$2
-SERVERFAKE=$3
-
 SERVERENV="${ROOTDIR}/private/servers/${SERVERNAME}.server"
 
-if [[ -f "${SERVERENV}" ]]; then
-    echoerr ".server file for this server already exists"
+if [[ ! -f "${SERVERENV}" ]]; then
+    if [[ $# -ne 3 ]]; then
+        usage
+        exit 1
+    fi
+
+    SERVERADDR=$2
+    SERVERFAKE=$3
+
+    KEYPAIR=$(sing-box generate reality-keypair | cut --delimiter=" " --field=2)
+    PRIVATE_KEY=$(echo ${KEYPAIR} | cut -d " "  -f 1)
+    PUBLIC_KEY=$(echo ${KEYPAIR} | cut -d " " -f 2)
+
+    echo "SERVERADDR=\"${SERVERADDR}\"" > "${SERVERENV}"
+    echo "SERVERFAKE=\"${SERVERFAKE}\"" >> "${SERVERENV}"
+    echo "PRIVATE_KEY=\"${PRIVATE_KEY}\"" >> "${SERVERENV}"
+    echo "PUBLIC_KEY=\"${PUBLIC_KEY}\"" >> "${SERVERENV}"
+elif [[ $# -ne 1 ]]; then
+    echoerr "This server already exists"
     exit 1
 fi
 
-KEYPAIR=$(sing-box generate reality-keypair | cut --delimiter=" " --field=2)
-PRIVATE_KEY=$(echo ${KEYPAIR} | cut -d " "  -f 1)
-PUBLIC_KEY=$(echo ${KEYPAIR} | cut -d " " -f 2)
+source "${SERVERENV}"
 
-echo "SERVERADDR=\"${SERVERADDR}\"" > "${SERVERENV}"
-echo "SERVERFAKE=\"${SERVERFAKE}\"" > "${SERVERENV}"
-echo "PRIVATE_KEY=\"${PRIVATE_KEY}\"" > "${SERVERENV}"
-echo "PUBLIC_KEY=\"${PUBLIC_KEY}\"" > "${SERVERENV}"
+CONFIG="${ROOTDIR}/private/configs/server.${SERVERNAME}.json"
+cp config/template-server.json "${CONFIG}"
+
+sed_command()
+{
+    sed -e "s/\"server\": \"\"/\"server\": \"${SERVERFAKE}\"/g" \
+        -e "s/\"server_name\": \"\"/\"server_name\": \"${SERVERFAKE}\"/g" \
+        -e "s/\"private_key\": \"\"/\"private_key\": \"${PRIVATE_KEY}\"/g" \
+        "${1}" > "${1}.sed"
+    mv "${1}.sed" "${1}"
+}
+
+sed_command "${CONFIG}"
+

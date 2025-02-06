@@ -19,7 +19,8 @@
     ],
     "rules": [
       {
-        "outbound": "any",
+        "domain": "",
+        "action": "route",
         "server": "dns-local"
       },
       {
@@ -27,6 +28,7 @@
           "geosite-anvyko",
           "local-rules"
         ],
+        "action": "route",
         "server": "dns-proxy"
       }
     ]
@@ -38,22 +40,13 @@
       "interface_name": "tun0",
       "address": "10.11.12.1/24",
       "auto_route": true,
-      "stack": "system",
-      "sniff": true
+      "stack": "system"
     }
   ],
   "outbounds": [
     {
       "type": "direct",
       "tag": "direct-out"
-    },
-    {
-      "type": "block",
-      "tag": "block"
-    },
-    {
-      "type": "dns",
-      "tag": "dns-out"
     },
     {
       "type": "vless",
@@ -80,14 +73,19 @@
   "route": {
     "rules": [
       {
+        "inbound": "tun-in",
+        "action": "sniff"
+      },
+      {
         "protocol": "dns",
-        "outbound": "dns-out"
+        "action": "hijack-dns"
       },
       {
         "rule_set": [
           "geosite-anvyko",
           "local-rules"
         ],
+        "action": "route",
         "outbound": "vless-out"
       }
     ],
