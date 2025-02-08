@@ -22,7 +22,8 @@
         "domain": "",
         "server": "dns-local"
       }
-    ]
+    ],
+    "strategy": "prefer_ipv4"
   },
   "inbounds": [
     {

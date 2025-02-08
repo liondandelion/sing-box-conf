@@ -29,7 +29,8 @@
         ],
         "server": "dns-proxy"
       }
-    ]
+    ],
+    "strategy": "prefer_ipv4"
   },
   "inbounds": [
     {
