@@ -7,23 +7,17 @@
   "dns": {
     "servers": [
       {
+        "type": "tcp",
+        "server": "8.8.8.8",
         "tag": "dns-proxy",
-        "address": "8.8.8.8",
         "detour": "vless-out"
       },
       {
-        "tag": "dns-local",
-        "address": "77.88.8.8",
-        "detour": "direct-out"
+        "type": "tcp",
+        "server": "77.88.8.8",
+        "tag": "dns-local"
       }
-    ],
-    "rules": [
-      {
-        "domain": "",
-        "server": "dns-local"
-      }
-    ],
-    "strategy": "prefer_ipv4"
+    ]
   },
   "inbounds": [
     {
@@ -63,6 +57,9 @@
     }
   ],
   "route": {
+    "default_domain_resolver": {
+      "server": "dns-local"
+    },
     "rules": [
       {
         "inbound": "tun-in",
