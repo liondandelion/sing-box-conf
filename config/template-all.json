@@ -26,6 +26,7 @@
       "interface_name": "tun0",
       "address": "10.11.12.1/24",
       "auto_route": true,
+      "auto_redirect": true,
       "stack": "system"
     }
   ],
