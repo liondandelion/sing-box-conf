@@ -33,7 +33,7 @@
       "type": "tun",
       "tag": "tun-in",
       "interface_name": "tun0",
-      "mtu": 1500,
+      "mtu": 1452,
       "address": "10.11.12.1/24",
       "auto_route": true,
       "stack": "system"
