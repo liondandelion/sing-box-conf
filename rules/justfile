@@ -1,0 +1,9 @@
+[private]
+default:
+	@just --list --justfile {{justfile()}}
+
+mkrules:
+	sing-box rule-set compile geosite-anvyko.json
+
+json-merge *files:
+	jq -s '{version: .[0].version, rules: ([.[].rules[]?] | unique_by(.domain, .domain_suffix))}' {{files}}
