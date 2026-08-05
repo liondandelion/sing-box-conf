@@ -8,14 +8,14 @@
     "servers": [
       {
         "type": "tcp",
-        "server": "8.8.8.8",
         "tag": "dns-proxy",
-        "detour": "vless-out"
+        "detour": "naive-out",
+        "server": "8.8.8.8"
       },
       {
         "type": "tcp",
-        "server": "77.88.8.8",
-        "tag": "dns-local"
+        "tag": "dns-local",
+        "server": "77.88.8.8"
       }
     ],
     "rules": [
@@ -38,24 +38,17 @@
   ],
   "outbounds": [
     {
-      "type": "vless",
-      "tag": "vless-out",
+      "type": "naive",
+      "tag": "naive-out",
       "server": "",
       "server_port": 443,
-      "uuid": "",
-      "flow": "xtls-rprx-vision",
+      "username": "",
+      "password": "",
+      "insecure_concurrency": 1,
+      "udp_over_tcp": true,
       "tls": {
         "enabled": true,
-        "server_name": "yahoo.com",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-        "reality": {
-          "enabled": true,
-          "public_key": "",
-          "short_id": ""
-        }
+        "server_name": ""
       }
     },
     {
@@ -64,9 +57,6 @@
     }
   ],
   "route": {
-    "default_domain_resolver": {
-      "server": "dns-local"
-    },
     "rules": [
       {
         "inbound": "tun-in",
@@ -76,22 +66,30 @@
         "protocol": "dns",
         "action": "hijack-dns"
       },
-	  {
-		"rule_set": "geosite-ru",
-		"outbound": "direct-out"
-	  }
+      {
+        "rule_set": "geosite-ru",
+        "outbound": "direct-out"
+      },
+      {
+	      "ip_cidr": [
+		      "10.0.0.0/8",
+					"172.16.0.0/12",
+		      "192.168.0.0/16"
+	      ],
+				"outbound": "direct-out"
+      }
     ],
-	"rule_set": [
-	  {
-		"tag": "geosite-ru",
-		"type": "remote",
-		"format": "binary",
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "geosite-ru",
         "url": "https://github.com/liondandelion/sing-box-conf/releases/latest/download/geosite-ru.srs",
         "update_interval": "24h0m0s",
-		"download_detour": "vless-out"
-	  }
-	],
-    "auto_detect_interface": true
+        "download_detour": "naive-out"
+      }
+    ],
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns-local"
   },
   "experimental": {
     "cache_file": {

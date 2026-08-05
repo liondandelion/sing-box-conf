@@ -1,56 +1,44 @@
 {
-  "log": {
-    "disabled": true,
-    "level": "error",
-    "output": "sing-box.log",
-    "timestamp": true
-  },
-  "inbounds": [
-    {
-      "type": "vless",
-      "tag": "vless-in",
-      "listen": "::",
-      "listen_port": 443,
-      "users": [
-        {
-          "name": "",
-          "uuid": "",
-          "flow": "xtls-rprx-vision"
-        }
-      ],
-      "tls": {
-        "enabled": true,
-        "server_name": "",
-        "reality": {
-          "enabled": true,
-          "handshake": {
-            "server": "",
-            "server_port": 443
-          },
-          "private_key": "",
-          "short_id": [
-            ""
-          ]
-        }
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "type": "direct",
-      "tag": "direct-out"
-    }
-  ],
-  "route": {
-    "rules": [
-      {
-        "inbound": "vless-in",
-        "action": "sniff"
-      },
-      {
-        "protocol": "bittorrent",
-        "action": "reject"
-      }
-    ]
-  }
+	"log": {
+		"level": "warn",
+		"output": "sing-box.log",
+		"timestamp": true
+	},
+	"inbounds": [
+		{
+			"type": "naive",
+			"tag": "naive-in",
+			"listen": "127.0.0.1",
+			"listen_port": 1080,
+			"users": [
+				{
+					"Username": "",
+					"Password": ""
+				},
+				{
+					"Username": "",
+					"Password": ""
+				}
+			],
+			"network": "tcp"
+		}
+	],
+	"outbounds": [
+		{
+		"type": "direct",
+		"tag": "direct-out"
+		}
+	],
+	"route": {
+		"rules": [
+			{
+				"inbound": "naive-in",
+				"action": "sniff"
+			},
+			{
+				"protocol": "bittorrent",
+				"action": "reject"
+			}
+		]
+	}
 }
